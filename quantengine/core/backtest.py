@@ -66,6 +66,9 @@ class BacktestEngine:
             'kdj': self._strategy_kdj,
             'boll': self._strategy_boll,
             'rsi': self._strategy_rsi,
+            'momentum': self._strategy_momentum,
+            'mean_reversion': self._strategy_mean_reversion,
+            'composite': self._strategy_composite,
         }
         return strategies.get(strategy)
     
@@ -138,6 +141,85 @@ class BacktestEngine:
                 return 'buy'
             elif result[-1] >= overbought and result[-2] < overbought:
                 return 'sell'
+        return 'hold'
+    
+    def _strategy_momentum(self, klines, params):
+        period = params.get('period', 20)
+        
+        closes = [k.get('close', 0) for k in klines]
+        if len(closes) < period + 1:
+            return 'hold'
+        
+        momentum = closes[-1] / closes[-period] - 1
+        
+        if momentum > 0.1:
+            return 'buy'
+        elif momentum < -0.1:
+            return 'sell'
+        return 'hold'
+    
+    def _strategy_mean_reversion(self, klines, params):
+        period = params.get('period', 20)
+        threshold = params.get('threshold', 0.1)
+        
+        closes = [k.get('close', 0) for k in klines]
+        if len(closes) < period:
+            return 'hold'
+        
+        ma_val = sum(closes[-period:]) / period
+        bias = (closes[-1] - ma_val) / ma_val
+        
+        if bias < -threshold:
+            return 'buy'
+        elif bias > threshold:
+            return 'sell'
+        return 'hold'
+    
+    def _strategy_composite(self, klines, params):
+        closes = [k.get('close', 0) for k in klines]
+        
+        if len(closes) < 20:
+            return 'hold'
+        
+        score = 0
+        
+        ma_5 = sum(closes[-5:]) / 5
+        ma_20 = sum(closes[-20:]) / 20
+        if ma_5 > ma_20:
+            score += 25
+        
+        momentum = closes[-1] / closes[-10] - 1
+        if momentum > 0:
+            score += 20
+        
+        volumes = [k.get('volume', 0) for k in klines]
+        if len(volumes) >= 20:
+            vol_recent = sum(volumes[-5:]) / 5
+            vol_avg = sum(volumes[-20:]) / 20
+            if vol_recent > vol_avg * 1.2:
+                score += 15
+        
+        score += 20
+        
+        atr_vals = []
+        highs = [k.get('high', 0) for k in klines]
+        lows = [k.get('low', 0) for k in klines]
+        for i in range(1, len(closes)):
+            tr = max(
+                highs[i] - lows[i],
+                abs(highs[i] - closes[i-1]),
+                abs(lows[i] - closes[i-1])
+            )
+            atr_vals.append(tr)
+        if atr_vals and atr_vals[-1] < sum(atr_vals) / len(atr_vals):
+            score += 10
+        
+        score += 10
+        
+        if score >= 80:
+            return 'buy'
+        elif score <= 30:
+            return 'sell'
         return 'hold'
     
     def _execute_buy(self, kline, params):

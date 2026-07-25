@@ -187,7 +187,34 @@ class DataStorage:
             return result[0] if result else 0
     
     def append_kline(self, stock_code, klines):
-        self.save_kline(stock_code, klines)
+        with sqlite3.connect(self.db_path) as conn:
+            cursor = conn.cursor()
+            
+            stock_id = self.get_stock_id(stock_code)
+            if stock_id is None:
+                cursor.execute('''
+                    INSERT INTO stocks (code, name, market) VALUES (?, ?, ?)
+                ''', (stock_code, '', stock_code[-2:] if stock_code.endswith(('.SH', '.SZ')) else 'SZ'))
+                conn.commit()
+                stock_id = cursor.lastrowid
+            
+            for kline in klines:
+                cursor.execute('''
+                    INSERT OR IGNORE INTO daily_bars (
+                        stock_id, trade_date, open, high, low, close, volume, amount
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    stock_id,
+                    kline.get('date', ''),
+                    kline.get('open', 0),
+                    kline.get('high', 0),
+                    kline.get('low', 0),
+                    kline.get('close', 0),
+                    kline.get('volume', 0),
+                    kline.get('amount', 0),
+                ))
+            
+            conn.commit()
     
     def health_check(self):
         try:

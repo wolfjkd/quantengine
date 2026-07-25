@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quantengine"
-version = "0.1.0"
+version = "0.1.1"
 description = "量化研究引擎 - 回测、策略、因子、信号"
 requires-python = ">=3.10"
 dependencies = [
@@ -20,7 +20,6 @@ keywords = ["quantitative", "finance", "backtest", "strategy", "factor"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
