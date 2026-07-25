@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/),
 
+## [0.1.2] - 2026-07-26
+
+### Added
+- 涨跌停限制 5%/10%/20% 三档（ST 5%、创业板科创板 20%、普通 10%）
+- 仓位管理实际实现（等权分配 + 单票上限 + 最大持仓数）
+- 5类22因子补齐（价值5/成长4/质量5/动量4/风险4）
+- 5类43条件补齐（基本面9/技术面22/资金面4/风险面3/标记5）
+
+### Fixed
+- T+1 规则真正生效：买入当天 frozen=True 不可卖，次日解冻
+- 信号命名统一为小写：strong_buy/buy/neutral/sell/strong_sell/avoid
+- README quickstart 示例 API 调用与实际签名一致
+- 补打 v0.1.0 Git Tag
+- 修正 docs/phase2-report.md 与实际代码不符的陈述（因子数、条件数、T+1、涨跌停、信号命名）
+
 ## [0.1.1] - 2026-07-25
 
 ### Added - 完成阶段2核心功能

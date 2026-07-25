@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quantengine"
-version = "0.1.1"
+version = "0.1.2"
 description = "量化研究引擎 - 回测、策略、因子、信号"
 requires-python = ">=3.10"
 dependencies = [
