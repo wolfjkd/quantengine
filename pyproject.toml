@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantengine"
+version = "0.1.0"
+description = "量化研究引擎 - 回测、策略、因子、信号"
+requires-python = ">=3.10"
+dependencies = [
+    "quantcore>=0.1.0",
+    "numpy>=1.24",
+    "SQLAlchemy>=2.0",
+]
+authors = [
+    { name = "wolfjkd", email = "wolfjkd@users.noreply.github.com" }
+]
+license = "MIT"
+keywords = ["quantitative", "finance", "backtest", "strategy", "factor"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/wolfjkd/quantengine"
+Repository = "https://github.com/wolfjkd/quantengine"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short"
+pythonpath = ["."]
+
+[tool.pytest-benchmark]
+warmup = false
+min_rounds = 5
+max_rounds = 50
+
+[tool.coverage.run]
+source = ["quantengine"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
