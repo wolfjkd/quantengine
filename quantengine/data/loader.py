@@ -36,7 +36,7 @@ class TFHClient:
     def get_kline(self, stock_code, start_date, end_date, freq='daily'):
         try:
             from mcp import Client
-            client = Client('cn-financial-mcp')
+            client = Client('tradex')
             result = client.call('get_historical_price', {
                 'symbol': stock_code,
                 'start_date': start_date,
@@ -49,7 +49,7 @@ class TFHClient:
     def get_stock_list(self, market=None):
         try:
             from mcp import Client
-            client = Client('cn-financial-mcp')
+            client = Client('tradex')
             result = client.call('get_stock_list', {})
             return result
         except Exception:

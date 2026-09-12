@@ -26,14 +26,14 @@ class TestSignalEngine:
         
         assert signal is not None
         assert signal.stock_code == '000001'
-        assert signal.signal in ['strong_buy', 'buy', 'neutral', 'sell', 'strong_sell', 'avoid']
+        assert signal.signal in ['STRONG_BUY', 'BUY', 'HOLD', 'SELL', 'STRONG_SELL', 'AVOID']
         assert 0 <= signal.score <= 100
     
     def test_analyze_short_data(self):
         klines = generate_test_klines(10)
         signal = SignalEngine.analyze('000001', klines)
         
-        assert signal.signal == 'avoid'
+        assert signal.signal == 'AVOID'
         assert signal.score == 0
     
     def test_scan(self):

@@ -50,15 +50,15 @@ class SignalEngine:
     @classmethod
     def analyze(cls, stock_code, klines, options=None):
         options = options or {}
-        
+
         if len(klines) < 20:
-            return TradingSignal(stock_code, 'avoid', 0, None, {})
-        
+            return TradingSignal(stock_code, 'AVOID', 0, None, {})
+
         dimensions = cls._calculate_dimensions(klines)
         score = cls._calculate_score(dimensions)
         signal = cls._determine_signal(score)
         trade_plan = cls._generate_trade_plan(klines, dimensions, score)
-        
+
         return TradingSignal(stock_code, signal, score, trade_plan, dimensions)
     
     @classmethod
@@ -178,15 +178,15 @@ class SignalEngine:
     @classmethod
     def _determine_signal(cls, score):
         if score >= 90:
-            return 'strong_buy'
+            return 'STRONG_BUY'
         elif score >= 70:
-            return 'buy'
+            return 'BUY'
         elif score >= 40:
-            return 'neutral'
+            return 'HOLD'
         elif score >= 20:
-            return 'sell'
+            return 'SELL'
         else:
-            return 'strong_sell'
+            return 'STRONG_SELL'
     
     @classmethod
     def _generate_trade_plan(cls, klines, dimensions, score):

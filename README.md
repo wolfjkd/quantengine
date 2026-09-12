@@ -1,4 +1,6 @@
-# QuantEngine
+﻿# QuantEngine
+
+> **⚠️ 不再维护更新，已并入 TradeX**
 
 <p align="center">
   <strong>量化研究引擎 · 回测 / 策略 / 因子 / 信号 一体化引擎</strong><br/>
@@ -16,11 +18,11 @@
 ## 项目定位
 
 QuantEngine 是独立的量化研究引擎层，提供完整的回测、策略、因子、信号能力。
-基于 [QuantCore](https://github.com/wolfjkd/quantcore) 算法层，对接 [Trader Finance Hub](https://github.com/wolfjkd/trader-finance-hub) 数据层。
+基于 [QuantCore](https://github.com/wolfjkd/quantcore) 算法层，对接 [Tradex Hub](https://github.com/wolfjkd/tradex-hub) 数据层。
 
 **架构关系**：
 ```
-Trader Finance Hub (数据层, MCP)  ←─数据接口─  QuantEngine
+Tradex Hub (数据层, MCP)  ←─数据接口─  QuantEngine
        ↓                                            ↓
    AI Agent 调用                              QuantTerminal (应用层)
                                                   ↓
